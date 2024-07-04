@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>&lt;lorem-ipsum&gt;</title>
+  <meta name="description" content="A custom element that generates lorem ipsum text.">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="stylesheet" href="lib/highlight/highlight-github.css">
+  <link rel="stylesheet" href="css/water.css">
+  <link rel="stylesheet" href="css/main.css">
+  <script type="module" src="js/main.js"></script>
+  <script src="lib/highlight/highlight.min.js" defer></script>
+  <script>document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());</script>
+</head>
+<body>
+  <noscript>
+    <div class="noscript-banner">
+      This page requires JavaScript to work properly.
+      Please enable JavaScript in your browser settings.
+    </div>
+  </noscript>
+
+  <h1>&lt;lorem-ipsum&gt;</h1>
+  <div class="component-description">
+    <p>A custom element that generates lorem ipsum text.</p>
+    <p><a href="https://github.com/georapbox/lorem-ipsum-element" target="_blank" rel="noreferrer noopener">Source code & documentation</a></p>
+  </div>
+
+  <h2>Examples</h2>
+
+  <ol class="table-of-contents">
+    <li><a href="#example-paragraphs">Using paragrpahs</a></li>
+    <li><a href="#example-lists">Using lists</a></li>
+  </ol>
+
+  <h3 id="example-paragraphs">Using paragrpahs</h3>
+  <p>This is an example using paragraphs.</p>
+
+  <div class="card">
+    <browser-window url="https://github.com/georapbox/lorem-ipsum-element" icon>
+      <lorem-ipsum type="paragraphs" items="3"></lorem-ipsum>
+    </browser-window>
+
+    <details open>
+      <summary disabled>Source code</summary>
+
+<pre><code class="language-html">&lt;lorem-ipsum type="paragraphs" items="3"&gt;&lt;/lorem-ipsum&gt;
+</code></pre>
+    </details>
+  </div>
+
+  <h3 id="example-lists">Using lists</h3>
+  <p>This is an example using lists.</p>
+
+  <div class="card">
+    <browser-window url="https://github.com/georapbox/lorem-ipsum-element" icon>
+      <lorem-ipsum type="lists" items="3"></lorem-ipsum>
+    </browser-window>
+
+    <details open>
+      <summary disabled>Source code</summary>
+
+<pre><code class="language-html">&lt;lorem-ipsum type="lists" items="3"&gt;&lt;/lorem-ipsum&gt;
+</code></pre>
+    </details>
+  </div>
+
+  <h2>License</h2>
+  <p>Licensed under the <a href="https://georapbox.mit-license.org/@2024" target="_blank" rel="noreferrer noopener">The MIT License (MIT)</a></p>
+
+  <script>
+    document.querySelectorAll('h3[id^="example-"]').forEach((el, index) => {
+      el.insertAdjacentHTML('afterbegin', `<a href="#${el.getAttribute('id')}">#</a> Example ${index + 1} - `);
+    });
+
+    document.querySelectorAll('.card').forEach(el => {
+      el.insertAdjacentHTML('afterend', `<div class="back-top"><a href="#">↑ Back to top</a></div>`);
+    });
+  </script>
+</body>
+</html>

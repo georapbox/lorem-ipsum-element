@@ -1,0 +1,57 @@
+{
+  "name": "@georapbox/lorem-ipsum-element",
+  "version": "1.0.0",
+  "description": "A custom element that generates lorem ipsum text.",
+  "main": "dist/lorem-ipsum.js",
+  "module": "dist/lorem-ipsum.js",
+  "unpkg": "dist/lorem-ipsum.js",
+  "type": "module",
+  "types": "dist/lorem-ipsum.d.ts",
+  "files": [
+    "/src",
+    "/dist"
+  ],
+  "scripts": {
+    "lint": "eslint . --ext .js",
+    "test": "web-test-runner",
+    "test:watch": "npm run test -- --watch",
+    "test:coverage": "npm run test -- --coverage",
+    "types": "tsc --project tsconfig.json",
+    "dev:esbuild": "node ./scripts/dev.mjs",
+    "dev": "npm-run-all clean dev:esbuild",
+    "build:esbuild": "node ./scripts/build.mjs",
+    "build": "npm-run-all clean build:esbuild",
+    "clean": "rimraf dist",
+    "prepare": "npm-run-all clean lint test build types"
+  },
+  "keywords": [],
+  "author": {
+    "name": "George Raptis",
+    "email": "georapbox@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/georapbox/lorem-ipsum-element.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/georapbox/lorem-ipsum-element/issues"
+  },
+  "homepage": "https://github.com/georapbox/lorem-ipsum-element#readme",
+  "devDependencies": {
+    "@esm-bundle/chai": "~4.3.4-fix.0",
+    "@open-wc/testing": "~4.0.0",
+    "@web/test-runner": "~0.18.0",
+    "@web/test-runner-playwright": "~0.11.0",
+    "eslint": "~8.55.0",
+    "eslint-plugin-wc": "~2.0.4",
+    "npm-run-all": "~4.1.5",
+    "esbuild": "~0.21.3",
+    "rimraf": "~5.0.5",
+    "sinon": "~17.0.1",
+    "typescript": "~5.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
