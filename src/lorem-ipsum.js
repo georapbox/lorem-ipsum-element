@@ -1,5 +1,12 @@
 // @ts-check
 
+/**
+ * Represents a value that may be of type T, or null.
+ *
+ * @template T
+ * @typedef {T | null} Nullable
+ */
+
 import { shuffle } from './utils/shuffle.js';
 
 const COMPONENT_NAME = 'lorem-ipsum';
@@ -11,13 +18,13 @@ const COMPONENT_NAME = 'lorem-ipsum';
  * @tagname lorem-ipsum - This is the default tag name, unless overridden by the `defineCustomElement` method.
  * @extends HTMLElement
  *
- * @property {string} type - The type of content to generate. Either "paragraphs" or "lists".
- * @property {number} items - The number of paragraphs or lists to generate.
+ * @property {number} count - The number of paragraphs or lists to generate.
+ * @property {boolean} lists - Wheter to generate lists instead of paragraphs.
  * @property {boolean} startWithLorem - Whether the first paragraph should start with "Lorem ipsum dolor sit amet...".
  *
- * @attribute {string} type - Reflects the type property.
- * @attribute {number} items - Reflects the items property.
- * @attribute {boolean} start-with-lorem - Reflects the startWithLorem property.
+ * @attribute {number} count - The number of paragraphs or lists to generate.
+ * @attribute {string} lists - Whether to generate lists instead of paragraphs.
+ * @attribute {boolean} start-with-lorem - Whether the first paragraph should start with "Lorem ipsum dolor sit amet...".
  */
 class LoremIpsum extends HTMLElement {
   #loremIpsumPhrases = [
@@ -67,12 +74,19 @@ class LoremIpsum extends HTMLElement {
     'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.'
   ];
 
+  /** @type {Nullable<number>} */
+  #count = 1;
+  /** @type {Nullable<boolean>} */
+  #lists = false;
+  /** @type {Nullable<boolean>} */
+  #startWithLorem = false;
+
   constructor() {
     super();
   }
 
   static get observedAttributes() {
-    return ['type', 'items', 'start-with-lorem'];
+    return ['count', 'lists', 'start-with-lorem'];
   }
 
   /**
@@ -83,19 +97,16 @@ class LoremIpsum extends HTMLElement {
    * @param {string} newValue - The new value of the attribute.
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'type' && oldValue !== newValue) {
-      console.log('type changed', this.type);
-      this.#render();
+    if (name === 'count' && oldValue !== newValue) {
+      this.#count = Number(newValue);
     }
 
-    if (name === 'items' && oldValue !== newValue) {
-      console.log('type changed', this.items);
-      this.#render();
+    if (name === 'lists' && oldValue !== newValue) {
+      this.#lists = this.hasAttribute('lists');
     }
 
     if (name === 'start-with-lorem' && oldValue !== newValue) {
-      console.log('type changed', this.startWithLorem);
-      this.#render();
+      this.#startWithLorem = this.hasAttribute('start-with-lorem');
     }
   }
 
@@ -103,55 +114,70 @@ class LoremIpsum extends HTMLElement {
    * Lifecycle method that is called when the element is added to the DOM.
    */
   connectedCallback() {
-    this.#upgradeProperty('type');
-    this.#upgradeProperty('items');
+    this.#upgradeProperty('count');
+    this.#upgradeProperty('lists');
     this.#upgradeProperty('startWithLorem');
-    console.log('connected');
     this.#render();
   }
 
   /**
-   * @type {string} - The type of content to generate. Either "paragraphs" or "lists".
-   * @default 'paragraphs'
-   * @attribute type - Reflects the type property.
-   */
-  get type() {
-    return this.getAttribute('type') || 'paragraphs';
-  }
-
-  set type(value) {
-    this.setAttribute('type', value);
-  }
-
-  /**
-   * @type {number} - The number of paragraphs or lists to generate.
+   * @type {Nullable<number>} - The number of paragraphs or lists to generate.
    * @default 1
-   * @attribute items - Reflects the items property.
+   * @attribute count
    */
-  get items() {
-    return Math.abs(Math.floor(Number(this.getAttribute('items')))) || 1;
+  get count() {
+    return Math.abs(Math.floor(Number(this.#count))) || 1;
   }
 
-  set items(value) {
-    if (value == null) {
-      this.removeAttribute('items');
-      return;
-    }
-
-    this.setAttribute('items', (Math.abs(Math.floor(value)) || '1').toString());
+  set count(value) {
+    this.#count = Math.abs(Math.floor(Number(value))) || 1;
   }
 
   /**
-   * @type {boolean} - Whether the first paragraph should start with "Lorem ipsum dolor sit amet...".
+   * @type {Nullable<boolean>} - Wheter to generate lists instead of paragraphs.
    * @default false
-   * @attribute start-with-lorem - Reflects the startWithLorem property.
+   * @attribute lists
+   */
+  get lists() {
+    return !!this.#lists;
+  }
+
+  set lists(value) {
+    this.#lists = value;
+  }
+
+  /**
+   * @type {Nullable<boolean>} - Whether the first paragraph should start with "Lorem ipsum dolor sit amet...".
+   * @default false
+   * @attribute start-with-lorem
    */
   get startWithLorem() {
-    return this.hasAttribute('start-with-lorem');
+    return !!this.#startWithLorem;
   }
 
   set startWithLorem(value) {
-    this.toggleAttribute('start-with-lorem', !!value);
+    this.#startWithLorem = value;
+  }
+
+  /**
+   * Adjusts the list to ensure it starts with 'lorem ipsum' if needed.
+   *
+   * @param {string[]} phrases - The phrases to generate the random text from.
+   * @param {string[]} selectedPhrases - The selected phrases.
+   * @param {boolean} isFirst - Whether this is the first list/paragraph.
+   */
+  #ensureLoremIpsumStart(phrases, selectedPhrases, isFirst) {
+    if (isFirst && this.startWithLorem) {
+      const loremIpsumPhrase = phrases[0];
+      const includesLoremIpsum = selectedPhrases.includes(loremIpsumPhrase);
+
+      if (includesLoremIpsum) {
+        selectedPhrases.splice(selectedPhrases.indexOf(loremIpsumPhrase), 1);
+        selectedPhrases.unshift(loremIpsumPhrase);
+      } else {
+        selectedPhrases[0] = loremIpsumPhrase;
+      }
+    }
   }
 
   /**
@@ -165,20 +191,7 @@ class LoremIpsum extends HTMLElement {
   #generateParagraph(phrases, numberOfSentences, isFirstParagraph) {
     const shuffledPhrases = shuffle(phrases);
     const selectedPhrases = shuffledPhrases.slice(0, numberOfSentences);
-
-    // Ensure the first paragraph always starts with the first phrase.
-    if (isFirstParagraph && this.startWithLorem) {
-      const loremIpsumPhrase = phrases[0];
-      const includesLoremIpsum = selectedPhrases.includes(loremIpsumPhrase);
-
-      if (includesLoremIpsum) {
-        selectedPhrases.splice(selectedPhrases.indexOf(loremIpsumPhrase), 1);
-        selectedPhrases.unshift(loremIpsumPhrase);
-      } else {
-        selectedPhrases[0] = loremIpsumPhrase;
-      }
-    }
-
+    this.#ensureLoremIpsumStart(phrases, selectedPhrases, isFirstParagraph);
     return selectedPhrases.join(' ');
   }
 
@@ -187,26 +200,13 @@ class LoremIpsum extends HTMLElement {
    *
    * @param {string[]} phrases - The phrases to generate the random text from.
    * @param {*} numberOfItems - The number of items to generate.
-   * @param {*} isfirstList - Whether the list is the first one.
+   * @param {*} isFirstList - Whether the list is the first one.
    * @returns {string[]} - The generated list.
    */
-  #generateList(phrases, numberOfItems, isfirstList) {
+  #generateList(phrases, numberOfItems, isFirstList) {
     const shuffledPhrases = shuffle(phrases);
     const selectedPhrases = shuffledPhrases.slice(0, numberOfItems);
-
-    // Ensure the first list always starts with the first phrase.
-    if (isfirstList && this.startWithLorem) {
-      const loremIpsumPhrase = phrases[0];
-      const includesLoremIpsum = selectedPhrases.includes(loremIpsumPhrase);
-
-      if (includesLoremIpsum) {
-        selectedPhrases.splice(selectedPhrases.indexOf(loremIpsumPhrase), 1);
-        selectedPhrases.unshift(loremIpsumPhrase);
-      } else {
-        selectedPhrases[0] = loremIpsumPhrase;
-      }
-    }
-
+    this.#ensureLoremIpsumStart(phrases, selectedPhrases, isFirstList);
     return selectedPhrases;
   }
 
@@ -218,8 +218,12 @@ class LoremIpsum extends HTMLElement {
   #generateLoremIpsum(phrases) {
     this.textContent = '';
 
-    if (this.type === 'lists') {
-      for (let i = 0; i < this.items; i++) {
+    if (!this.count) {
+      return;
+    }
+
+    if (this.lists) {
+      for (let i = 0; i < this.count; i++) {
         const ul = document.createElement('ul');
         const numberOfItems = Math.floor(Math.random() * 5) + 3; // Random number of items between 3 and 7.
         const list = this.#generateList(phrases, numberOfItems, i === 0);
@@ -233,7 +237,7 @@ class LoremIpsum extends HTMLElement {
         this.appendChild(ul);
       }
     } else {
-      for (let i = 0; i < this.items; i++) {
+      for (let i = 0; i < this.count; i++) {
         const numberOfSentences = Math.floor(Math.random() * 5) + 3; // Random number of sentences between 3 and 7.
         const paragraph = this.#generateParagraph(phrases, numberOfSentences, i === 0);
 
@@ -244,9 +248,18 @@ class LoremIpsum extends HTMLElement {
     }
   }
 
+  /**
+   * Renders the lorem ipsum text.
+   */
   #render() {
-    console.log('render');
     this.#generateLoremIpsum(this.#loremIpsumPhrases);
+  }
+
+  /**
+   * Generates the lorem ipsum text.
+   */
+  generate() {
+    this.#render();
   }
 
   /**
@@ -256,7 +269,7 @@ class LoremIpsum extends HTMLElement {
    *
    * https://developers.google.com/web/fundamentals/web-components/best-practices#lazy-properties
    *
-   * @param {string} prop - The property name to upgrade.
+   * @param {'count' | 'lists' | 'startWithLorem'} prop - The property name to upgrade.
    */
   #upgradeProperty(prop) {
     /** @type {any} */

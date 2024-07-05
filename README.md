@@ -37,7 +37,7 @@ import './node_modules/@georapbox/lorem-ipsum-element/dist/lorem-ipsum-defined.j
 ### Markup
 
 ```html
-<lorem-ipsum paragraphs="3" start-with-lorem></lorem-ipsum>
+<lorem-ipsum count="3" start-with-lorem></lorem-ipsum>
 ```
 
 ## API
@@ -45,13 +45,16 @@ import './node_modules/@georapbox/lorem-ipsum-element/dist/lorem-ipsum-defined.j
 ### Properties
 | Name | Reflects | Type | Required | Default | Description |
 | ---- | -------- | ---- | -------- | ------- | ----------- |
-| `startWithLorem`<br>*`start-with-lorem`* | ✓ | Boolean | - | `false` | Whether the first paragraph should start with "Lorem ipsum dolor sit amet...". |
+| `count` | - | Number | - | `1` | The number of paragraphs or lists to generate. |
+| `lists` | - | Boolean | - | `false` | Whether to generate lists instead of paragraphs. |
+| `startWithLorem`<br>*`start-with-lorem`* | - | Boolean | - | `false` | Whether the first paragraph should start with "Lorem ipsum dolor sit amet...". |
 
 ### Methods
 
 | Name | Type | Description | Arguments |
 | ---- | ---- | ----------- | --------- |
 | `defineCustomElement` | Static | Defines/registers the custom element with the name provided. If no name is provided, the default name is used. The method checks if the element is already defined, hence will skip trying to redefine it. | elementName='lorem-ipsum' |
+| `generate`<sup>1</sup> | Instance | Generates the lorem ipsum text. Useful if you want to regenerate the text after changing the properties. | - |
 
 <sup>1</sup> Instance methods are only available after the component has been defined. To ensure the component is defined, you can use `whenDefined` method of the `CustomElementRegistry` interface, eg `customElements.whenDefined('lorem-ipsum').then(() => { /* call methods here */ });`
 
