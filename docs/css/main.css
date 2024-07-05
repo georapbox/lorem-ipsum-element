@@ -5,7 +5,7 @@
 }
 
 :root {
-  --body-max-width: 1024px;
+  --body-max-width: 800px;
   --card-bg-color: #ffffff;
   scroll-behavior: smooth;
 }
@@ -25,39 +25,6 @@
 .component-description p:last-child {
   margin-bottom: 0;
 }
-
-.card {
-  background-color: var(--card-bg-color);
-  padding: 1rem;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  margin-bottom: 0.5rem;
-}
-
-.card > details {
-  margin-bottom: 0;
-}
-
-.card details summary {
-  font-weight: 500;
-}
-
-
-.back-top {
-  text-align: right;
-  font-size: 0.875rem;
-}
-
-/* .table-of-contents {
-  columns: 300px 2;
-} */
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --card-bg-color: #283647;
-  }
-}
-
 browser-window {
   --bw-background: var(--background-alt);
   display: block;
@@ -65,4 +32,31 @@ browser-window {
 
 browser-window::part(base) {
   border-color: var(--border);
+}
+
+lorem-ipsum {
+  display: block;
+  height: 300px;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+lorem-ipsum:not(:defined) {
+  display: none;
+}
+
+form input[name="count"] {
+  min-width: 130px;
+}
+
+form input[type="checkbox"] {
+  min-width: 16px;
+}
+
+form input[type="submit"] {
+  margin: 16px 0 0 0;
+}
+
+form > div:not(:first-of-type) {
+  display: flex;
 }

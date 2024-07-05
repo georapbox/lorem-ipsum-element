@@ -29,56 +29,43 @@
     <p><a href="https://github.com/georapbox/lorem-ipsum-element" target="_blank" rel="noreferrer noopener">Source code & documentation</a></p>
   </div>
 
-  <h2>Examples</h2>
+  <h2>Demo</h2>
 
-  <ol class="table-of-contents">
-    <li><a href="#example-paragraphs">Using paragrpahs</a></li>
-    <li><a href="#example-lists">Using lists</a></li>
-  </ol>
+  <details open>
+    <summary>Customize the component</summary>
 
-  <h3 id="example-paragraphs">Using paragrpahs</h3>
-  <p>This is an example using paragraphs.</p>
+    <form>
+      <div>
+        <label for="count">Number of paragraphs or lists</label>
+        <input type="number" id="count" name="count" min="1" max="20" value="3">
+      </div>
 
-  <div class="card">
-    <browser-window url="https://github.com/georapbox/lorem-ipsum-element" icon>
-      <lorem-ipsum type="paragraphs" items="3"></lorem-ipsum>
-    </browser-window>
+      <div>
+        <input type="checkbox" id="lists" name="lists">
+        <label for="lists">Generate lists instead of paragraphs</label>
+      </div>
 
-    <details open>
-      <summary disabled>Source code</summary>
+      <div>
+        <input type="checkbox" id="start-with-lorem" name="start-with-lorem">
+        <label for="start-with-lorem">Always start with "Lorem ipsum dolor sit amet..."</label>
+      </div>
 
-<pre><code class="language-html">&lt;lorem-ipsum type="paragraphs" items="3"&gt;&lt;/lorem-ipsum&gt;
+      <input type="submit" value="Generate">
+    </form>
+  </details>
+
+  <browser-window url="https://github.com/georapbox/lorem-ipsum-element" icon>
+    <lorem-ipsum count="3"></lorem-ipsum>
+  </browser-window>
+
+  <details open>
+    <summary disabled>Source code</summary>
+
+<pre><code id="source-code" class="language-html">&lt;lorem-ipsum count="3"&gt;&lt;/lorem-ipsum&gt;
 </code></pre>
-    </details>
-  </div>
-
-  <h3 id="example-lists">Using lists</h3>
-  <p>This is an example using lists.</p>
-
-  <div class="card">
-    <browser-window url="https://github.com/georapbox/lorem-ipsum-element" icon>
-      <lorem-ipsum type="lists" items="3"></lorem-ipsum>
-    </browser-window>
-
-    <details open>
-      <summary disabled>Source code</summary>
-
-<pre><code class="language-html">&lt;lorem-ipsum type="lists" items="3"&gt;&lt;/lorem-ipsum&gt;
-</code></pre>
-    </details>
-  </div>
+  </details>
 
   <h2>License</h2>
   <p>Licensed under the <a href="https://georapbox.mit-license.org/@2024" target="_blank" rel="noreferrer noopener">The MIT License (MIT)</a></p>
-
-  <script>
-    document.querySelectorAll('h3[id^="example-"]').forEach((el, index) => {
-      el.insertAdjacentHTML('afterbegin', `<a href="#${el.getAttribute('id')}">#</a> Example ${index + 1} - `);
-    });
-
-    document.querySelectorAll('.card').forEach(el => {
-      el.insertAdjacentHTML('afterend', `<div class="back-top"><a href="#">↑ Back to top</a></div>`);
-    });
-  </script>
 </body>
 </html>
