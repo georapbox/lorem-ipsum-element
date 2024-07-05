@@ -1,12 +1,5 @@
 // @ts-check
 
-/**
- * Represents a value that may be of type T, or null.
- *
- * @template T
- * @typedef {T | null} Nullable
- */
-
 import { shuffle } from './utils/shuffle.js';
 
 const COMPONENT_NAME = 'lorem-ipsum';
@@ -27,7 +20,7 @@ const COMPONENT_NAME = 'lorem-ipsum';
  * @attribute {boolean} start-with-lorem - Whether the first paragraph should start with "Lorem ipsum dolor sit amet...".
  */
 class LoremIpsum extends HTMLElement {
-  #loremIpsumPhrases = [
+  #loremPhrases = [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
@@ -71,14 +64,22 @@ class LoremIpsum extends HTMLElement {
     'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.',
     'Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.',
     'Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.',
-    'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.'
+    'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.',
+    'Maecenas a justo iaculis dolor venenatis luctus.',
+    'Donec dapibus semper elit, ut ornare enim ullamcorper vel.',
+    'Sed finibus, dui ac viverra lobortis, arcu neque consectetur turpis, a varius enim augue fringilla urna.',
+    'Maecenas ultrices ac ipsum nec tincidunt.',
+    'Etiam tincidunt consectetur purus quis scelerisque; Duis eget diam ut mi condimentum imperdiet.',
+    'Nunc urna purus, pharetra consequat egestas eu, pellentesque eu neque.',
+    'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.',
+    'Donec ultricies eleifend sollicitudin; Vivamus sollicitudin odio purus, ut malesuada metus facilisis et.'
   ];
 
-  /** @type {Nullable<number>} */
+  /** @type {number} */
   #count = 1;
-  /** @type {Nullable<boolean>} */
+  /** @type {boolean} */
   #lists = false;
-  /** @type {Nullable<boolean>} */
+  /** @type {boolean} */
   #startWithLorem = false;
 
   constructor() {
@@ -121,7 +122,7 @@ class LoremIpsum extends HTMLElement {
   }
 
   /**
-   * @type {Nullable<number>} - The number of paragraphs or lists to generate.
+   * @type {number} - The number of paragraphs or lists to generate.
    * @default 1
    * @attribute count
    */
@@ -130,11 +131,11 @@ class LoremIpsum extends HTMLElement {
   }
 
   set count(value) {
-    this.#count = Math.abs(Math.floor(Number(value))) || 1;
+    this.#count = Number(value);
   }
 
   /**
-   * @type {Nullable<boolean>} - Wheter to generate lists instead of paragraphs.
+   * @type {boolean} - Wheter to generate lists instead of paragraphs.
    * @default false
    * @attribute lists
    */
@@ -147,7 +148,7 @@ class LoremIpsum extends HTMLElement {
   }
 
   /**
-   * @type {Nullable<boolean>} - Whether the first paragraph should start with "Lorem ipsum dolor sit amet...".
+   * @type {boolean} - Whether the first paragraph should start with "Lorem ipsum dolor sit amet...".
    * @default false
    * @attribute start-with-lorem
    */
@@ -160,14 +161,14 @@ class LoremIpsum extends HTMLElement {
   }
 
   /**
-   * Adjusts the list to ensure it starts with 'lorem ipsum' if needed.
+   * Adjusts the list in place to ensure it starts with 'lorem ipsum' if needed.
    *
    * @param {string[]} phrases - The phrases to generate the random text from.
    * @param {string[]} selectedPhrases - The selected phrases.
-   * @param {boolean} isFirst - Whether this is the first list/paragraph.
+   * @param {boolean} shouldStartWithLorem - Whether the list should start with 'lorem ipsum'.
    */
-  #ensureLoremIpsumStart(phrases, selectedPhrases, isFirst) {
-    if (isFirst && this.startWithLorem) {
+  #ensureLoremIpsumStart(phrases, selectedPhrases, shouldStartWithLorem) {
+    if (shouldStartWithLorem) {
       const loremIpsumPhrase = phrases[0];
       const includesLoremIpsum = selectedPhrases.includes(loremIpsumPhrase);
 
@@ -191,7 +192,7 @@ class LoremIpsum extends HTMLElement {
   #generateParagraph(phrases, numberOfSentences, isFirstParagraph) {
     const shuffledPhrases = shuffle(phrases);
     const selectedPhrases = shuffledPhrases.slice(0, numberOfSentences);
-    this.#ensureLoremIpsumStart(phrases, selectedPhrases, isFirstParagraph);
+    this.#ensureLoremIpsumStart(phrases, selectedPhrases, isFirstParagraph && this.startWithLorem);
     return selectedPhrases.join(' ');
   }
 
@@ -199,14 +200,14 @@ class LoremIpsum extends HTMLElement {
    * Generates a list with a random number of items.
    *
    * @param {string[]} phrases - The phrases to generate the random text from.
-   * @param {*} numberOfItems - The number of items to generate.
-   * @param {*} isFirstList - Whether the list is the first one.
+   * @param {number} numberOfItems - The number of items to generate.
+   * @param {boolean} isFirstList - Whether the list is the first one.
    * @returns {string[]} - The generated list.
    */
   #generateList(phrases, numberOfItems, isFirstList) {
     const shuffledPhrases = shuffle(phrases);
     const selectedPhrases = shuffledPhrases.slice(0, numberOfItems);
-    this.#ensureLoremIpsumStart(phrases, selectedPhrases, isFirstList);
+    this.#ensureLoremIpsumStart(phrases, selectedPhrases, isFirstList && this.startWithLorem);
     return selectedPhrases;
   }
 
@@ -252,7 +253,7 @@ class LoremIpsum extends HTMLElement {
    * Renders the lorem ipsum text.
    */
   #render() {
-    this.#generateLoremIpsum(this.#loremIpsumPhrases);
+    this.#generateLoremIpsum(this.#loremPhrases);
   }
 
   /**
