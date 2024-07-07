@@ -105,12 +105,20 @@ describe('lorem-ipsum', () => {
 
     it('should start with "Lorem ipsum..." when "startWithLorem" is set', async () => {
       const el = await fixture(html`<lorem-ipsum start-with-lorem></lorem-ipsum>`);
-      expect(el.querySelector('p').textContent.startsWith('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')).to.be.true;
+      expect(
+        el
+          .querySelector('p')
+          .textContent.startsWith('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+      ).to.be.true;
     });
 
     it('should start with "Lorem ipsum..." when "startWithLorem" is set and "lists" is set', async () => {
       const el = await fixture(html`<lorem-ipsum start-with-lorem lists></lorem-ipsum>`);
-      expect(el.querySelector('ul > li').textContent.startsWith('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')).to.be.true;
+      expect(
+        el
+          .querySelector('ul > li')
+          .textContent.startsWith('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+      ).to.be.true;
     });
   });
 });

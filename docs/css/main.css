@@ -36,7 +36,7 @@ browser-window::part(base) {
 
 lorem-ipsum {
   display: block;
-  height: 300px;
+  max-height: 20rem;
   overflow: auto;
   overscroll-behavior: contain;
 }
