@@ -5,7 +5,7 @@
 }
 
 :root {
-  --body-max-width: 800px;
+  --body-max-width: 1024px;
   --card-bg-color: #ffffff;
   scroll-behavior: smooth;
 }
@@ -25,25 +25,6 @@
 .component-description p:last-child {
   margin-bottom: 0;
 }
-browser-window {
-  --bw-background: var(--background-alt);
-  display: block;
-}
-
-browser-window::part(base) {
-  border-color: var(--border);
-}
-
-lorem-ipsum {
-  display: block;
-  max-height: 20rem;
-  overflow: auto;
-  overscroll-behavior: contain;
-}
-
-lorem-ipsum:not(:defined) {
-  display: none;
-}
 
 form input[name="count"] {
   min-width: 130px;
@@ -57,6 +38,34 @@ form input[type="submit"] {
   margin: 16px 0 0 0;
 }
 
-form > div:not(:first-of-type) {
+form > fieldset > div:not(:first-of-type) {
   display: flex;
+}
+
+pre code:not(.hljs) {
+  padding: 1em;
+}
+
+.no-js #result {
+  display: none;
+}
+
+browser-window {
+  --bw-background: var(--background-alt);
+  display: block;
+}
+
+browser-window::part(base) {
+  border-color: var(--border);
+}
+
+lorem-ipsum:not(:defined) {
+  display: none;
+}
+
+lorem-ipsum {
+  display: block;
+  max-height: 32rem;
+  overflow: auto;
+  overscroll-behavior: contain;
 }

@@ -1,11 +1,13 @@
 // @ts-check
 
+import { phrases } from './constants/phrases.js';
 import { shuffle } from './utils/shuffle.js';
+import { randomInt } from './utils/randomInt.js';
 
 const COMPONENT_NAME = 'lorem-ipsum';
 
 /**
- * @summary A custom element that generates lorem ipsum text.
+ * @summary A custom element that generates "Lorem Ipsum" placeholder text.
  * @documentation https://github.com/georapbox/lorem-ipsum-element
  *
  * @tagname lorem-ipsum - This is the default tag name, unless overridden by the `defineCustomElement` method.
@@ -20,67 +22,10 @@ const COMPONENT_NAME = 'lorem-ipsum';
  * @attribute {boolean} start-with-lorem - Whether the first paragraph should start with "Lorem ipsum dolor sit amet...".
  */
 class LoremIpsum extends HTMLElement {
-  #loremPhrases = [
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    'Curabitur pretium tincidunt lacus. Nulla gravida orci a odio.',
-    'Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris.',
-    'Integer in mauris eu nibh euismod gravida.',
-    'Duis ac tellus et risus vulputate vehicula.',
-    'Donec lobortis risus a elit. Etiam tempor.',
-    'Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam.',
-    'Maecenas fermentum consequat mi. Donec fermentum.',
-    'Pellentesque malesuada nulla a mi.',
-    'Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque.',
-    'Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat.',
-    'Cras mollis scelerisque nunc. Nullam arcu.',
-    'Aliquam erat volutpat. Duis ac turpis.',
-    'Integer rutrum ante eu lacus.',
-    'Vestibulum libero nisl, porta vel, scelerisque eget, malesuada at, neque.',
-    'Vivamus eget nibh. Etiam cursus leo vel metus.',
-    'Nulla facilisi. Aenean nec eros.',
-    'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Suspendisse sollicitudin velit sed leo.',
-    'Ut pharetra augue nec augue.',
-    'Nam elit agna, endrerit sit amet, tincidunt ac, viverra sed, nulla.',
-    'Donec porta diam eu massa.',
-    'Quisque diam lorem, interdum vitae, dapibus ac, scelerisque vitae, pede.',
-    'Donec eget tellus non erat lacinia fermentum.',
-    'Donec in velit vel ipsum auctor pulvinar.',
-    'Vestibulum iaculis lacinia est.',
-    'Proin dictum elementum velit.',
-    'Fusce euismod consequat ante.',
-    'Pellentesque sed dolor. Aliquam congue fermentum nisl.',
-    'Mauris accumsan nulla vel diam.',
-    'Sed in lacus ut enim adipiscing aliquet.',
-    'Nulla venenatis. In pede mi, aliquet sit amet, euismod in, auctor ut, ligula.',
-    'Aliquam dapibus tincidunt metus.',
-    'Praesent justo dolor, lobortis quis, lobortis dignissim, pulvinar ac, lorem.',
-    'Vestibulum sed ante. Donec sagittis euismod purus.',
-    'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
-    'Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
-    'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.',
-    'Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.',
-    'Sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.',
-    'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.',
-    'Maecenas a justo iaculis dolor venenatis luctus.',
-    'Donec dapibus semper elit, ut ornare enim ullamcorper vel.',
-    'Sed finibus, dui ac viverra lobortis, arcu neque consectetur turpis, a varius enim augue fringilla urna.',
-    'Maecenas ultrices ac ipsum nec tincidunt.',
-    'Etiam tincidunt consectetur purus quis scelerisque; Duis eget diam ut mi condimentum imperdiet.',
-    'Nunc urna purus, pharetra consequat egestas eu, pellentesque eu neque.',
-    'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.',
-    'Donec ultricies eleifend sollicitudin; Vivamus sollicitudin odio purus, ut malesuada metus facilisis et.'
-  ];
-
-  /** @type {number} */
   #count = 1;
-  /** @type {boolean} */
   #lists = false;
-  /** @type {boolean} */
   #startWithLorem = false;
+  #resolveUpdateComplete = () => {};
 
   constructor() {
     super();
@@ -161,107 +106,74 @@ class LoremIpsum extends HTMLElement {
   }
 
   /**
-   * Adjusts the list in place to ensure it starts with 'lorem ipsum' if needed.
-   *
-   * @param {string[]} phrases - The phrases to generate the random text from.
-   * @param {string[]} selectedPhrases - The selected phrases.
-   * @param {boolean} shouldStartWithLorem - Whether the list should start with 'lorem ipsum'.
-   */
-  #ensureLoremIpsumStart(phrases, selectedPhrases, shouldStartWithLorem) {
-    if (shouldStartWithLorem) {
-      const loremIpsumPhrase = phrases[0];
-      const includesLoremIpsum = selectedPhrases.includes(loremIpsumPhrase);
-
-      if (includesLoremIpsum) {
-        selectedPhrases.splice(selectedPhrases.indexOf(loremIpsumPhrase), 1);
-        selectedPhrases.unshift(loremIpsumPhrase);
-      } else {
-        selectedPhrases[0] = loremIpsumPhrase;
-      }
-    }
-  }
-
-  /**
-   * Generates a paragraph with a random number of sentences.
-   *
-   * @param {string[]} phrases - The phrases to generate the random text from.
-   * @param {number} numberOfSentences - The number of sentences to generate.
-   * @param {boolean} isFirstParagraph - Whether the paragraph is the first one.
-   * @returns {string} - The generated paragraph.
-   */
-  #generateParagraph(phrases, numberOfSentences, isFirstParagraph) {
-    const shuffledPhrases = shuffle(phrases);
-    const selectedPhrases = shuffledPhrases.slice(0, numberOfSentences);
-    this.#ensureLoremIpsumStart(phrases, selectedPhrases, isFirstParagraph && this.startWithLorem);
-    return selectedPhrases.join(' ');
-  }
-
-  /**
-   * Generates a list with a random number of items.
-   *
-   * @param {string[]} phrases - The phrases to generate the random text from.
-   * @param {number} numberOfItems - The number of items to generate.
-   * @param {boolean} isFirstList - Whether the list is the first one.
-   * @returns {string[]} - The generated list.
-   */
-  #generateList(phrases, numberOfItems, isFirstList) {
-    const shuffledPhrases = shuffle(phrases);
-    const selectedPhrases = shuffledPhrases.slice(0, numberOfItems);
-    this.#ensureLoremIpsumStart(phrases, selectedPhrases, isFirstList && this.startWithLorem);
-    return selectedPhrases;
-  }
-
-  /**
    * Generates the lorem ipsum text.
-   *
-   * @param {string[]} phrases - The phrases to generate the random text from.
    */
-  #generateLoremIpsum(phrases) {
+  async #render() {
     this.textContent = '';
 
-    if (!this.count) {
-      return;
-    }
+    const YIELD_EVERY_N_ITERATIONS = 100;
+    let element = null;
 
-    if (this.lists) {
-      for (let i = 0; i < this.count; i++) {
-        const ul = document.createElement('ul');
-        const numberOfItems = Math.floor(Math.random() * 5) + 3; // Random number of items between 3 and 7.
-        const list = this.#generateList(phrases, numberOfItems, i === 0);
+    for (let i = 0; i < this.count; i++) {
+      const numberOfItems = randomInt(3, 7);
+      const shuffledPhrases = shuffle(phrases);
+      const selectedPhrases = shuffledPhrases.slice(0, numberOfItems);
+
+      // Ensure the list starts with the 'Lorem ipsum...' phrase
+      // if the option is set and it's the first iteration.
+      if (this.startWithLorem && i === 0) {
+        const loremIpsumPhrase = phrases[0];
+        const includesLoremIpsum = selectedPhrases.includes(loremIpsumPhrase);
+
+        if (includesLoremIpsum) {
+          selectedPhrases.splice(selectedPhrases.indexOf(loremIpsumPhrase), 1);
+          selectedPhrases.unshift(loremIpsumPhrase);
+        } else {
+          selectedPhrases[0] = loremIpsumPhrase;
+        }
+      }
+
+      if (this.lists) {
+        element = document.createElement('ul');
 
         for (let j = 0; j < numberOfItems; j++) {
           const li = document.createElement('li');
-          li.textContent = list[j];
-          ul.appendChild(li);
+          li.textContent = selectedPhrases[j];
+          element.appendChild(li);
         }
-
-        this.appendChild(ul);
+      } else {
+        element = document.createElement('p');
+        element.textContent = selectedPhrases.join(' ');
       }
-    } else {
-      for (let i = 0; i < this.count; i++) {
-        const numberOfSentences = Math.floor(Math.random() * 5) + 3; // Random number of sentences between 3 and 7.
-        const paragraph = this.#generateParagraph(phrases, numberOfSentences, i === 0);
 
-        const p = document.createElement('p');
-        p.textContent = paragraph;
-        this.appendChild(p);
+      this.appendChild(element);
+
+      if (i % YIELD_EVERY_N_ITERATIONS === 0) {
+        // Yield control back to the main thread every N iterations
+        await new Promise(requestAnimationFrame);
       }
     }
-  }
 
-  /**
-   * Renders the lorem ipsum text.
-   */
-  #render() {
-    this.#generateLoremIpsum(this.#loremPhrases);
+    this.#resolveUpdateComplete();
   }
 
   /**
    * Generates the lorem ipsum text.
+   *
+   * @returns {Promise<void>} - A promise that resolves when the text is generated.
    */
-  generate() {
-    this.#render();
+  async generate() {
+    await this.#render();
   }
+
+  /**
+   * A promise that resolves when the element has completed updating.
+   *
+   * @type {Promise<void>}
+   */
+  updateComplete = new Promise(resolve => {
+    this.#resolveUpdateComplete = resolve;
+  });
 
   /**
    * This is to safe guard against cases where, for instance, a framework may have added the element to the page and set a

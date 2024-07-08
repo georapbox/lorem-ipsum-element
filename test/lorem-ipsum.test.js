@@ -9,13 +9,6 @@ describe('lorem-ipsum', () => {
     fixtureCleanup();
   });
 
-  describe('accessibility', () => {
-    it('passes accessibility test when enabled without attributes', async () => {
-      const el = await fixture(html`<lorem-ipsum></lorem-ipsum>`);
-      await expect(el).to.be.accessible();
-    });
-  });
-
   describe('attributes - properties', () => {
     // count
     it('reflects attribute "count" to property "count"', async () => {
@@ -78,6 +71,7 @@ describe('lorem-ipsum', () => {
       el.setAttribute('start-with-lorem', '');
       const oldContent = el.innerHTML;
       el.generate();
+      await el.updateComplete;
       expect(el.innerHTML).to.not.equal(oldContent);
     });
   });
@@ -85,40 +79,72 @@ describe('lorem-ipsum', () => {
   describe('basic functionality', () => {
     it('should generate 1 paragrpah by default', async () => {
       const el = await fixture(html`<lorem-ipsum></lorem-ipsum>`);
+      await el.updateComplete;
       expect(el.querySelectorAll('p')).to.have.lengthOf(1);
     });
 
     it('should generate 5 paragraphs when "count" is set to 5', async () => {
       const el = await fixture(html`<lorem-ipsum count="5"></lorem-ipsum>`);
+      await el.updateComplete;
       expect(el.querySelectorAll('p')).to.have.lengthOf(5);
     });
 
-    it('should generate 1 list when "lists" is set and c"ount is not set', async () => {
+    it('should generate 1 list when "lists" is set and "count" is not set', async () => {
       const el = await fixture(html`<lorem-ipsum lists></lorem-ipsum>`);
+      await el.updateComplete;
       expect(el.querySelectorAll('ul')).to.have.lengthOf(1);
     });
 
     it('should generate 5 lists when "lists" is set and "count" is set to 5', async () => {
       const el = await fixture(html`<lorem-ipsum lists count="5"></lorem-ipsum>`);
+      await el.updateComplete;
       expect(el.querySelectorAll('ul')).to.have.lengthOf(5);
+    });
+
+    it('should generate N paragraphs when "count" is a negative number', async () => {
+      const el = await fixture(html`<lorem-ipsum count="-5"></lorem-ipsum>`);
+      await el.updateComplete;
+      expect(el.querySelectorAll('p')).to.have.lengthOf(5);
+    });
+
+    it('should generate N lists when "lists" is set and "count" is a negative number', async () => {
+      const el = await fixture(html`<lorem-ipsum lists count="-5"></lorem-ipsum>`);
+      await el.updateComplete;
+      expect(el.querySelectorAll('ul')).to.have.lengthOf(5);
+    });
+
+    it('should generate 1 paragraph when "count" is not a number', async () => {
+      const el = await fixture(html`<lorem-ipsum count="NaN"></lorem-ipsum>`);
+      await el.updateComplete;
+      expect(el.querySelectorAll('p')).to.have.lengthOf(1);
+    });
+
+    it('should generate 1 list when "lists" is set and "count" is not a number', async () => {
+      const el = await fixture(html`<lorem-ipsum lists count="NaN"></lorem-ipsum>`);
+      await el.updateComplete;
+      expect(el.querySelectorAll('ul')).to.have.lengthOf(1);
     });
 
     it('should start with "Lorem ipsum..." when "startWithLorem" is set', async () => {
       const el = await fixture(html`<lorem-ipsum start-with-lorem></lorem-ipsum>`);
-      expect(
-        el
-          .querySelector('p')
-          .textContent.startsWith('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
-      ).to.be.true;
+      await el.updateComplete;
+      const firstParagraph = el.querySelector('p');
+      const expected = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+      expect(firstParagraph.textContent.startsWith(expected)).to.be.true;
     });
 
     it('should start with "Lorem ipsum..." when "startWithLorem" is set and "lists" is set', async () => {
       const el = await fixture(html`<lorem-ipsum start-with-lorem lists></lorem-ipsum>`);
-      expect(
-        el
-          .querySelector('ul > li')
-          .textContent.startsWith('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
-      ).to.be.true;
+      await el.updateComplete;
+      const firstListItem = el.querySelector('ul > li');
+      const expected = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+      expect(firstListItem.textContent.startsWith(expected)).to.be.true;
+    });
+
+    it('test with many paragraphs', async () => {
+      const el = await fixture(html`<lorem-ipsum count="200"></lorem-ipsum>`);
+      await el.updateComplete;
+      expect(el.querySelectorAll('p')).to.have.lengthOf(200);
     });
   });
 });

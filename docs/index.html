@@ -6,16 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <title>&lt;lorem-ipsum&gt;</title>
-  <meta name="description" content="A custom element that generates lorem ipsum text.">
+  <meta name="description" content="A custom element that generates Lorem Ipsum placeholder text.">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="stylesheet" href="lib/highlight/highlight-github.css">
   <link rel="stylesheet" href="css/water.css">
   <link rel="stylesheet" href="css/main.css">
-  <script type="module" src="js/main.js"></script>
   <script src="lib/highlight/highlight.min.js" defer></script>
-  <script>document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());</script>
+  <script src="js/main.js" type="module"></script>
 </head>
-<body>
+<body class="no-js">
   <noscript>
     <div class="noscript-banner">
       This page requires JavaScript to work properly.
@@ -25,44 +24,55 @@
 
   <h1>&lt;lorem-ipsum&gt;</h1>
   <div class="component-description">
-    <p>A custom element that generates lorem ipsum text.</p>
+    <p>A custom element that generates "Lorem Ipsum" placeholder text.</p>
     <p><a href="https://github.com/georapbox/lorem-ipsum-element" target="_blank" rel="noreferrer noopener">Source code & documentation</a></p>
   </div>
 
   <h2>Demo</h2>
 
   <details open>
-    <summary>Customize the component</summary>
+    <summary>Component customization</summary>
+
+    <p>
+      Customize the component's behavior by changing its attributes using the form below.
+    </p>
 
     <form>
-      <div>
-        <label for="count">Number of paragraphs or lists</label>
-        <input type="number" id="count" name="count" min="1" max="100">
-      </div>
+      <fieldset>
+        <legend>Attributes</legend>
 
-      <div>
-        <input type="checkbox" id="lists" name="lists">
-        <label for="lists">Generate lists instead of paragraphs</label>
-      </div>
+        <div>
+          <label for="count">Number of paragraphs or lists</label>
+          <input type="number" id="count" name="count" min="1" max="2000000">
+        </div>
 
-      <div>
-        <input type="checkbox" id="start-with-lorem" name="start-with-lorem">
-        <label for="start-with-lorem">Always start with "Lorem ipsum dolor sit amet..."</label>
-      </div>
+        <div>
+          <input type="checkbox" id="lists" name="lists">
+          <label for="lists">Generate lists instead of paragraphs</label>
+        </div>
 
-      <input type="submit" value="Generate">
+        <div>
+          <input type="checkbox" id="start-with-lorem" name="start-with-lorem">
+          <label for="start-with-lorem">Always start with "Lorem ipsum dolor sit amet..."</label>
+        </div>
+      </fieldset>
+
+      <input type="submit" value="Generate" disabled>
     </form>
   </details>
 
-  <browser-window url="https://github.com/georapbox/lorem-ipsum-element" icon>
-    <lorem-ipsum></lorem-ipsum>
-  </browser-window>
-
   <details open>
-    <summary disabled>Source code</summary>
+    <summary>Source code</summary>
+    <p>Include the custom element in your HTML file.</p>
+    <pre><code id="source-code">&lt;lorem-ipsum&gt;&lt;/lorem-ipsum&gt;</code></pre>
+  </details>
 
-<pre><code id="source-code" class="language-html">&lt;lorem-ipsum count="3"&gt;&lt;/lorem-ipsum&gt;
-</code></pre>
+  <details id="result" open>
+    <summary>Result</summary>
+
+    <browser-window url="https://github.com/georapbox/lorem-ipsum-element" icon>
+      <lorem-ipsum count="1"></lorem-ipsum>
+    </browser-window>
   </details>
 
   <h2>License</h2>

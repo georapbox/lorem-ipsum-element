@@ -1,7 +1,7 @@
 {
   "name": "@georapbox/lorem-ipsum-element",
   "version": "1.0.0",
-  "description": "A custom element that generates lorem ipsum text.",
+  "description": "A custom element that generates Lorem Ipsum placeholder text.",
   "main": "dist/lorem-ipsum.js",
   "module": "dist/lorem-ipsum.js",
   "unpkg": "dist/lorem-ipsum.js",
@@ -25,7 +25,11 @@
     "clean": "rimraf dist",
     "prepare": "npm-run-all clean lint test build types"
   },
-  "keywords": [],
+  "keywords": [
+    "custom element",
+    "web component",
+    "lorem ipsum"
+  ],
   "author": {
     "name": "George Raptis",
     "email": "georapbox@gmail.com"

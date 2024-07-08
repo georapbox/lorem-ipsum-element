@@ -7,9 +7,13 @@
 
 # &lt;lorem-ipsum&gt;
 
-A custom element that generates lorem ipsum text.
+A custom element that generates "Lorem Ipsum" placeholder text.
 
 [API documentation](#api) &bull; [Demo][demo]
+
+## Description
+
+The `lorem-ipsum` element generates "Lorem Ipsum" placeholder text. Use this element to quickly generate placeholder text for demos and prototypes, or to fill in content for testing purposes.
 
 ## Install
 
