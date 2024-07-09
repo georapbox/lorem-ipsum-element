@@ -1,8 +1,10 @@
 import fs from 'fs/promises';
 import * as esbuild from 'esbuild';
 
-const readPkg = async () =>
-  JSON.parse(await fs.readFile(new URL('../package.json', import.meta.url)));
+const readPkg = async () => {
+  return JSON.parse(await fs.readFile(new URL('../package.json', import.meta.url)));
+};
+
 const pkg = await readPkg();
 
 const makeBanner = pkg => `/*!

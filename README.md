@@ -18,7 +18,7 @@ The `lorem-ipsum` element generates "Lorem Ipsum" placeholder text. Use this ele
 ## Install
 
 ```sh
-$ npm install --save @georapbox/lorem-ipsum-element
+npm install --save @georapbox/lorem-ipsum-element
 ```
 
 ## Usage
@@ -65,6 +65,53 @@ import './node_modules/@georapbox/lorem-ipsum-element/dist/lorem-ipsum-defined.j
 ## Changelog
 
 For API updates and breaking changes, check the [CHANGELOG][changelog].
+
+## Development setup
+
+### Prerequisites
+
+The project requires `Node.js` and `npm` to be installed on your environment. Preferrably, use [nvm](https://github.com/nvm-sh/nvm) Node Version Manager and use the version of Node.js specified in the `.nvmrc` file by running `nvm use`.
+
+### Install dependencies
+
+Install the project dependencies by running the following command.
+
+```sh
+npm install
+```
+
+### Build for development
+
+Watch for changes and start a development server by running the following command.
+
+```sh
+npm start
+```
+
+### Linting
+
+Lint the code by running the following command.
+
+```sh
+npm run lint
+```
+
+### Testing
+
+Run the tests by running any of the following commands.
+
+```sh
+npm test
+npm run test:watch # watch mode
+```
+
+### Build for production
+
+Create a production build by running the following command.
+
+```sh
+npm run build
+```
 
 ## License
 
