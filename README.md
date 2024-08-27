@@ -2,7 +2,7 @@
 [![npm license](https://img.shields.io/npm/l/@georapbox/lorem-ipsum-element.svg)](https://www.npmjs.com/package/@georapbox/lorem-ipsum-element)
 
 [demo]: https://georapbox.github.io/lorem-ipsum-element/
-[license]: https://georapbox.mit-license.org/@2024
+[license]: https://github.com/georapbox/lorem-ipsum-element/blob/main/LICENSE
 [changelog]: https://github.com/georapbox/lorem-ipsum-element/blob/main/CHANGELOG.md
 
 # &lt;lorem-ipsum&gt;
