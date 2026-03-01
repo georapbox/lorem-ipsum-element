@@ -7,6 +7,7 @@ LoremIpsum.defineCustomElement();
 describe('lorem-ipsum', () => {
   afterEach(() => {
     fixtureCleanup();
+    sinon.restore();
   });
 
   describe('attributes - properties', () => {
@@ -61,7 +62,7 @@ describe('lorem-ipsum', () => {
       const el = await fixture(html`<lorem-ipsum></lorem-ipsum>`);
       const generateSpy = sinon.spy(el, 'generate');
       el.generate();
-      expect(generateSpy.called).to.be.true;
+      sinon.assert.calledOnce(generateSpy);
     });
 
     it('should generate new content when "generate()" is called', async () => {
